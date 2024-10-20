@@ -39,7 +39,7 @@ class S2AM(object):
         
         self.title = '_'+args.machine + '_' + args.data + '_' + args.arch
         self.args.checkpoint = args.checkpoint + self.title
-        self.device = torch.device('cuda')
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
          # create checkpoint dir
         if not isdir(self.args.checkpoint):
             mkdir_p(self.args.checkpoint)

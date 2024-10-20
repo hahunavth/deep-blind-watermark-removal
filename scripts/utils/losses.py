@@ -151,20 +151,20 @@ def VGGLoss(losstype):
     else:
         raise Exception("error in %s"%losstype)
 
-        
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class VGGLossA(nn.Module):
     def __init__(self, vgg=None, weights=None, indices=None, normalize=True):
         super(VGGLossA, self).__init__()        
         if vgg is None:
-            self.vgg = Vgg19().cuda()
+            self.vgg = Vgg19().to(DEVICE)
         else:
             self.vgg = vgg
         self.criterion = nn.L1Loss()
         self.weights = weights or [1.0/2.6, 1.0/4.8, 1.0/3.7, 1.0/5.6, 10/1.5]
         self.indices = indices or [2, 7, 12, 21, 30]
         if normalize:
-            self.normalize = MeanShift([0.485, 0.456, 0.406], [0.229, 0.224, 0.225], norm=True).cuda()
+            self.normalize = MeanShift([0.485, 0.456, 0.406], [0.229, 0.224, 0.225], norm=True).to(DEVICE)
         else:
             self.normalize = None
 
@@ -203,13 +203,13 @@ class VGGLossX(nn.Module):
     def __init__(self, normalize=True, mask=False, relative=False):
         super(VGGLossX, self).__init__()
         
-        self.vgg = VGG16FeatureExtractor().cuda()
-        self.criterion = nn.L1Loss().cuda() if not relative else l1_relative
+        self.vgg = VGG16FeatureExtractor().to(DEVICE)
+        self.criterion = nn.L1Loss().to(DEVICE) if not relative else l1_relative
         self.use_mask= mask
         self.relative = relative
 
         if normalize:
-            self.normalize = MeanShift([0.485, 0.456, 0.406], [0.229, 0.224, 0.225], norm=True).cuda()
+            self.normalize = MeanShift([0.485, 0.456, 0.406], [0.229, 0.224, 0.225], norm=True).to(DEVICE)
         else:
             self.normalize = None
 

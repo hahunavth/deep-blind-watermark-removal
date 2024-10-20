@@ -47,6 +47,20 @@ def main(args):
 if __name__ == '__main__':
     parser=Options().init(argparse.ArgumentParser(description='WaterMark Removal'))
     args = parser.parse_args()
+
+    # save args object and make it restoreable
+    args_file = os.path.join("ckpt", 'args.pk')
+
+    import pickle as pkl
+    # with open(args_file, 'wb') as f:
+    #     pkl.dump(args, f)
+    #     print('==> save args object to {}'.format(args_file))
+
+    # load args object from file
+    with open(args_file, 'rb') as f:
+        args = pkl.load(f)
+        print('==> load args object from {}'.format(args_file))
+
     print('==================================== WaterMark Removal =============================================')
     print('==> {:50}: {:<}'.format("Start Time",time.ctime(time.time())))
     print('==> {:50}: {:<}'.format("USE GPU",os.environ['CUDA_VISIBLE_DEVICES'] if 'CUDA_VISIBLE_DEVICES' in os.environ else 'CPU'))

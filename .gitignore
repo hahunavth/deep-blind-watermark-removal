@@ -4,3 +4,23 @@ ckpt_vx__vvv4n/
 data/
 
 **/__pycache__/
+
+
+
+python main.py\
+    --epochs 100\ 
+    --schedule 100\ 
+    --lr 1e-3 -c ckpt\ 
+    --arch vvv4n\ 
+    --sltype vggx\ 
+    --style-loss 0.025\ 
+    --ssim-loss 0.15\ 
+    --masked True\ 
+    --loss-type hybrid\ 
+    --limited-dataset 1\ 
+    --machine vx\ 
+    --input-size 256\ 
+    --train-batch 4\ 
+    --test-batch 1\ 
+    --base-dir data/manhua_ds\ 
+    --gpu False
