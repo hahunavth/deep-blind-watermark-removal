@@ -1,10 +1,10 @@
-numpy==1.19.1
-opencv-python==3.4.8.29
+numpy #==1.19.1
+opencv-python==3.4.18.65 #==3.4.8.29
 Pillow
-scikit-image==0.14.5
-scikit-learn==0.23.1
-scipy==1.2.1
-sklearn==0.0
+scikit-image #==0.14.5
+scikit-learn #==0.23.1
+scipy #==1.2.1
+# sklearn #==0.0
 tensorboardX
 torch>=1.0.0
 torchvision
