@@ -25,23 +25,7 @@ CUDA_VISIBLE_DEVICES=0 python /data/home/yb87432/s2am/main.py  --epochs 100\
  --data _images
 
 
-python main.py  --epochs 100\
- --schedule 100\
- --lr 1e-3\
- -c eval/10kgray/1e3_bs4_256_hybrid_ssim_vgg\
- --arch vvv4n\
- --sltype vggx\
- --style-loss 0.025\
- --ssim-loss 0.15\
- --masked True\
- --loss-type hybrid\
- --limited-dataset 1\
- --machine vx\
- --input-size 256\
- --train-batch 4\
- --test-batch 1\
- --base-dir $HOME/watermark/10kgray/\
- --data _images
+python main.py  --epochs 100 --schedule 100 --lr 1e-3 -c ckpt --arch vvv4n --sltype vggx --style-loss 0.025 --ssim-loss 0.15 --masked True --loss-type hybrid --limited-dataset 1 --machine vx --input-size 256 --train-batch 4 --test-batch 1 --base-dir ../tmp/split_and_refine_ds/ --data _images
 
 
 

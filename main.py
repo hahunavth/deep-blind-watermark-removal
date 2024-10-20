@@ -13,10 +13,11 @@ from options import Options
 
 def main(args):
     
-    if 'HFlickr' or 'HCOCO' or 'Hday2night' or 'HAdobe5k' in args.base_dir:
-        dataset_func = datasets.BIH
-    else:
-        dataset_func = datasets.COCO
+    # if 'HFlickr' or 'HCOCO' or 'Hday2night' or 'HAdobe5k' in args.base_dir:
+    #     dataset_func = datasets.BIH
+    # else:
+    #     dataset_func = datasets.COCO
+    dataset_func = datasets.COMIC
 
     train_loader = torch.utils.data.DataLoader(dataset_func('train',args),batch_size=args.train_batch, shuffle=True,
         num_workers=args.workers, pin_memory=True)
@@ -48,7 +49,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     print('==================================== WaterMark Removal =============================================')
     print('==> {:50}: {:<}'.format("Start Time",time.ctime(time.time())))
-    print('==> {:50}: {:<}'.format("USE GPU",os.environ['CUDA_VISIBLE_DEVICES']))
+    print('==> {:50}: {:<}'.format("USE GPU",os.environ['CUDA_VISIBLE_DEVICES'] if 'CUDA_VISIBLE_DEVICES' in os.environ else 'CPU'))
     print('==================================== Stable Parameters =============================================')
     for arg in vars(args):
         if type(getattr(args, arg)) == type([]):

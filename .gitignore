@@ -1,3 +1,6 @@
 venv/
+ckpt/
+ckpt_vx__vvv4n/
+data/
 
 **/__pycache__/
