@@ -101,6 +101,10 @@ class COMIC(data.Dataset):
         anno = Image.open(self.anno[index]).convert("RGB")
         wm = Image.open(self.wm[index]).convert('RGB')
 
+        # if mask has no masked region, return random sample
+        if np.sum(np.array(mask)) == 0:
+            return self.__getitem__(random.randint(0, len(self) - 1))
+
         return {
             "image": self.trans(img),
             "target": self.trans(anno),

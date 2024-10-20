@@ -48,18 +48,23 @@ if __name__ == '__main__':
     parser=Options().init(argparse.ArgumentParser(description='WaterMark Removal'))
     args = parser.parse_args()
 
-    # save args object and make it restoreable
-    # args_file = os.path.join("ckpt", 'args.pk')
-
+    ## save args object and make it restoreable
     # import pickle as pkl
+    # args_file = os.path.join("ckpt", 'args.pk')
     # with open(args_file, 'wb') as f:
     #     pkl.dump(args, f)
     #     print('==> save args object to {}'.format(args_file))
 
-    # # load args object from file
-    # with open(args_file, 'rb') as f:
-    #     args = pkl.load(f)
-    #     print('==> load args object from {}'.format(args_file))
+    # load args object from file
+    import pickle as pkl
+    args_file = os.path.join("ckpt", 'args.pk')
+    if os.path.exists(args_file):
+        with open(args_file, 'rb') as f:
+            args = pkl.load(f)
+            print('==> load args object from {}'.format(args_file))
+    else:
+        print('==> {} not exists!'.format(args_file))
+
 
     print('==================================== WaterMark Removal =============================================')
     print('==> {:50}: {:<}'.format("Start Time",time.ctime(time.time())))
