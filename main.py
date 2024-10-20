@@ -49,17 +49,17 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # save args object and make it restoreable
-    args_file = os.path.join("ckpt", 'args.pk')
+    # args_file = os.path.join("ckpt", 'args.pk')
 
-    import pickle as pkl
+    # import pickle as pkl
     # with open(args_file, 'wb') as f:
     #     pkl.dump(args, f)
     #     print('==> save args object to {}'.format(args_file))
 
-    # load args object from file
-    with open(args_file, 'rb') as f:
-        args = pkl.load(f)
-        print('==> load args object from {}'.format(args_file))
+    # # load args object from file
+    # with open(args_file, 'rb') as f:
+    #     args = pkl.load(f)
+    #     print('==> load args object from {}'.format(args_file))
 
     print('==================================== WaterMark Removal =============================================')
     print('==> {:50}: {:<}'.format("Start Time",time.ctime(time.time())))
