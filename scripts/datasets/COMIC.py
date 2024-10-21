@@ -119,6 +119,7 @@ class COMIC(data.Dataset):
 
     def __len__(self):
         return len(self.train)
+        # return 10
 
 
 if __name__ == "__main__":

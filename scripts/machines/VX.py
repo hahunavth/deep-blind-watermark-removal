@@ -168,7 +168,7 @@ class VX(BasicMachine):
             if self.args.freq > 0 and current_index % self.args.freq == 0:
                 self.validate(current_index)
                 self.flush()
-                self.save_checkpoint()
+                self.save_checkpoint(snapshot=True)
 
         self.record('train/loss_L2', losses.avg, epoch)
         self.record('train/loss_Mask', lossMask.avg, epoch)
