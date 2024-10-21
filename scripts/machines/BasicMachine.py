@@ -240,7 +240,7 @@ class BasicMachine(object):
     def resume(self,resume_path):
         if isfile(resume_path):
                 print("=> loading checkpoint '{}'".format(resume_path))
-                current_checkpoint = torch.load(resume_path)
+                current_checkpoint = torch.load(resume_path, map_location=self.device)
                 if isinstance(current_checkpoint['state_dict'], torch.nn.DataParallel):
                     current_checkpoint['state_dict'] = current_checkpoint['state_dict'].module
 

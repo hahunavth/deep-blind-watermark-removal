@@ -478,15 +478,16 @@ class UnetVMS2AMv4(nn.Module):
             self.s2am = VMSingleS2AM(4,down=ResDownNew,up=ResUpNew)
 
     def set_optimizers(self):
-        self.optimizer_encoder = torch.optim.Adam(self.encoder.parameters(), lr=0.001)
-        self.optimizer_image = torch.optim.Adam(self.image_decoder.parameters(), lr=0.001)
-        self.optimizer_mask = torch.optim.Adam(self.mask_decoder.parameters(), lr=0.001)
-        self.optimizer_s2am = torch.optim.Adam(self.s2am.parameters(), lr=0.001)
+        lr = 0.0001 # NOTE: HARDCODE 0.0001 when finetuning
+        self.optimizer_encoder = torch.optim.Adam(self.encoder.parameters(), lr=lr)
+        self.optimizer_image = torch.optim.Adam(self.image_decoder.parameters(), lr=lr)
+        self.optimizer_mask = torch.optim.Adam(self.mask_decoder.parameters(), lr=lr)
+        self.optimizer_s2am = torch.optim.Adam(self.s2am.parameters(), lr=lr)
 
         if self.vm_decoder is not None:
-            self.optimizer_vm = torch.optim.Adam(self.vm_decoder.parameters(), lr=0.001)
+            self.optimizer_vm = torch.optim.Adam(self.vm_decoder.parameters(), lr=lr)
         if self.shared != 0:
-            self.optimizer_shared = torch.optim.Adam(self.shared_decoder.parameters(), lr=0.001)
+            self.optimizer_shared = torch.optim.Adam(self.shared_decoder.parameters(), lr=lr)
 
     def zero_grad_all(self):
         self.optimizer_encoder.zero_grad()

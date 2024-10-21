@@ -27,7 +27,7 @@ CUDA_VISIBLE_DEVICES=0 python /data/home/yb87432/s2am/main.py  --epochs 100\
 
 python main.py  --epochs 100 --schedule 100 --lr 1e-3 -c ckpt --arch vvv4n --sltype vggx --style-loss 0.025 --ssim-loss 0.15 --masked True --loss-type hybrid --limited-dataset 1 --machine vx --input-size 256 --train-batch 4 --test-batch 1 --base-dir ../tmp/split_and_refine_ds/ --data _images
 
-
+ python test.py --resume D:\\Projects\\WR-comic\\deep-blind-watermark-removal\\ztmp\\checkpoint_10ep.pth.tar --base-dir ./data/manhua_ds --arch vvv4n --sltype vggx --style-loss 0.025 --ssim-loss 0.15 --masked True --loss-type hybrid --limited-dataset 1
 
 # example training scripts for TIP-20
 # Improving the Harmony of the Composite Image by Spatial-Separated Attention Module
