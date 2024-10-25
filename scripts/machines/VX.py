@@ -121,7 +121,7 @@ class VX(BasicMachine):
             inputs = batches['image'].to(self.device)
             target = batches['target'].to(self.device)
             mask = batches['mask'].to(self.device)
-            wm =  batches['wm'].to(self.device)
+            wm =  batches['wm'].to(self.device) if 'wm' in batches else None
 
             outputs = self.model(self.norm(inputs))
             

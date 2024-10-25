@@ -112,17 +112,26 @@ class COMIC(data.Dataset):
         if np.sum(np.array(mask)) == 0:
             return self.__getitem__(random.randint(0, len(self) - 1))
 
-        return {
+        sample = {
             "image": self.trans(img),
             "target": self.trans(anno),
             "mask": self.trans(mask),
-            "wm": self.trans(wm) if wm is not None else None,
+
             "name": self.train[index].split("/")[-1],
             "imgurl": self.train[index],
             "maskurl": self.mask[index],
             "targeturl": self.anno[index],
-            "wmurl": self.wm[index] if wm is not None else None,
+
         }
+
+        if wm is not None:
+            return {
+                **sample,
+                "wm": self.trans(wm),
+                "wmurl": self.wm[index],
+            }
+
+        return sample
 
     def __len__(self):
         return len(self.train)
