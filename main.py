@@ -18,12 +18,13 @@ def main(args):
     # else:
     #     dataset_func = datasets.COCO
     # dataset_func = datasets.COMIC
-    dataset_func = datasets.COMBINED_COMMIC
+    dataset_func_train = datasets.COMBINED_COMMIC
+    dataset_func_val = datasets.COMBINED_COMMIC
 
-    train_loader = torch.utils.data.DataLoader(dataset_func('train',args),batch_size=args.train_batch, shuffle=True,
+    train_loader = torch.utils.data.DataLoader(dataset_func_train('train',args),batch_size=args.train_batch, shuffle=True,
         num_workers=args.workers, pin_memory=True)
     
-    val_loader = torch.utils.data.DataLoader(dataset_func('val',args),batch_size=args.test_batch, shuffle=False,
+    val_loader = torch.utils.data.DataLoader(dataset_func_val('val',args),batch_size=args.test_batch, shuffle=False,
         num_workers=args.workers, pin_memory=True)
 
     lr = args.lr
