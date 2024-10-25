@@ -23,7 +23,7 @@ def main(args):
 
     train_loader = torch.utils.data.DataLoader(dataset_func_train('train',args),batch_size=args.train_batch, shuffle=True,
         num_workers=args.workers, pin_memory=True)
-    
+
     val_loader = torch.utils.data.DataLoader(dataset_func_val('val',args),batch_size=args.test_batch, shuffle=False,
         num_workers=args.workers, pin_memory=True)
 

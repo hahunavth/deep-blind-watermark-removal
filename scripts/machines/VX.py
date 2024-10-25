@@ -54,7 +54,7 @@ class Losses(nn.Module):
 
         # try the loss in the masked region
         if wm is None:
-            wm_loss = torch.FloatTensor([0]).to(self.device)
+            wm_loss = torch.FloatTensor([0]).to(pred_ims.device)
         else:
             if self.args.masked and 'hybrid' in self.args.loss_type: # masked loss
                 pixel_loss += sum([self.outputLoss(pred_im, target, mask) for pred_im in pred_ims])
