@@ -99,7 +99,11 @@ class COMIC(data.Dataset):
     def __getitem__(self, index):
         img = Image.open(self.train[index]).convert("RGB")
         mask = Image.open(self.mask[index]).convert("L")
-        anno = Image.open(self.anno[index]).convert("RGB")
+        # NOTE: Hotfix WR_ser_manhua_ds3
+        try:
+            anno = Image.open(self.anno[index]).convert("RGB")
+        except Exception:
+            anno = Image.open(self.mask[index].replace("mask", "target")).convert("RGB")
         wm = None
         if self.wm is not None:
             wm = Image.open(self.wm[index]).convert('RGB')
