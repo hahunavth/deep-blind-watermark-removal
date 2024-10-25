@@ -19,7 +19,7 @@ def main(args):
     #     dataset_func = datasets.COCO
     # dataset_func = datasets.COMIC
     dataset_func_train = datasets.COMBINED_COMMIC
-    dataset_func_val = datasets.COMBINED_COMMIC
+    dataset_func_val = datasets.COMIC
 
     train_loader = torch.utils.data.DataLoader(dataset_func_train('train',args),batch_size=args.train_batch, shuffle=True,
         num_workers=args.workers, pin_memory=True)
