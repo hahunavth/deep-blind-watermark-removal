@@ -27,7 +27,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 class COMIC(data.Dataset):
-    def __init__(self, train, config=None, sample=[], gan_norm=False, use_wm=True):
+    def __init__(self, train, config=None, sample=[], gan_norm=False, use_wm=False): # NOTE: use_wm=True
         self.train = []
         self.anno = []
         self.mask = []

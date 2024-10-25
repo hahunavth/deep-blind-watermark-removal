@@ -53,25 +53,27 @@ class Losses(nn.Module):
         pred_ims = pred_ims if is_dic(pred_ims) else [pred_ims]
 
         # try the loss in the masked region
-        if self.args.masked and 'hybrid' in self.args.loss_type: # masked loss
-            pixel_loss += sum([self.outputLoss(pred_im, target, mask) for pred_im in pred_ims])
-            pixel_loss += sum([self.default(pred_im*pred_ms,target*mask) for pred_im in pred_ims])
-            recov_imgs = [ self.denorm(pred_im*mask + (1-mask)*self.norm(target)) for pred_im in pred_ims ]
-            wm_loss += self.wrloss(pred_wms, wm, mask)
-            wm_loss += self.default(pred_wms*pred_ms, wm*mask)
-
-        elif self.args.masked and 'relative' in self.args.loss_type: # masked loss
-            pixel_loss += sum([self.outputLoss(pred_im, target, mask) for pred_im in pred_ims])
-            recov_imgs = [ self.denorm(pred_im*mask + (1-mask)*self.norm(target)) for pred_im in pred_ims ]
-            wm_loss = self.wrloss(pred_wms, wm, mask)
-        elif self.args.masked:
-            pixel_loss += sum([self.outputLoss(pred_im*mask, target*mask) for pred_im in pred_ims])
-            recov_imgs = [ self.denorm(pred_im*pred_ms + (1-pred_ms)*self.norm(target)) for pred_im in pred_ims ]
-            wm_loss = self.wrloss(pred_wms*mask, wm*mask)
+        if wm is None:
+            wm_loss = torch.FloatTensor([0]).to(self.device)
         else:
-            pixel_loss += sum([self.outputLoss(pred_im*pred_ms, target*mask) for pred_im in pred_ims])
-            recov_imgs = [ self.denorm(pred_im*pred_ms + (1-pred_ms)*self.norm(target)) for pred_im in pred_ims ]
-            wm_loss = self.wrloss(pred_wms*pred_ms,wm*mask)
+            if self.args.masked and 'hybrid' in self.args.loss_type: # masked loss
+                pixel_loss += sum([self.outputLoss(pred_im, target, mask) for pred_im in pred_ims])
+                pixel_loss += sum([self.default(pred_im*pred_ms,target*mask) for pred_im in pred_ims])
+                recov_imgs = [ self.denorm(pred_im*mask + (1-mask)*self.norm(target)) for pred_im in pred_ims ]
+                wm_loss += self.wrloss(pred_wms, wm, mask)
+                wm_loss += self.default(pred_wms*pred_ms, wm*mask)
+            elif self.args.masked and 'relative' in self.args.loss_type: # masked loss
+                pixel_loss += sum([self.outputLoss(pred_im, target, mask) for pred_im in pred_ims])
+                recov_imgs = [ self.denorm(pred_im*mask + (1-mask)*self.norm(target)) for pred_im in pred_ims ]
+                wm_loss = self.wrloss(pred_wms, wm, mask)
+            elif self.args.masked:
+                pixel_loss += sum([self.outputLoss(pred_im*mask, target*mask) for pred_im in pred_ims])
+                recov_imgs = [ self.denorm(pred_im*pred_ms + (1-pred_ms)*self.norm(target)) for pred_im in pred_ims ]
+                wm_loss = self.wrloss(pred_wms*mask, wm*mask)
+            else:
+                pixel_loss += sum([self.outputLoss(pred_im*pred_ms, target*mask) for pred_im in pred_ims])
+                recov_imgs = [ self.denorm(pred_im*pred_ms + (1-pred_ms)*self.norm(target)) for pred_im in pred_ims ]
+                wm_loss = self.wrloss(pred_wms*pred_ms,wm*mask)
 
         pixel_loss += sum([self.default(im,target) for im in recov_imgs])
 
