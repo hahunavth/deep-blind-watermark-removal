@@ -17,7 +17,8 @@ def main(args):
     #     dataset_func = datasets.BIH
     # else:
     #     dataset_func = datasets.COCO
-    dataset_func = datasets.COMIC
+    # dataset_func = datasets.COMIC
+    dataset_func = datasets.COMBINED_COMMIC
 
     train_loader = torch.utils.data.DataLoader(dataset_func('train',args),batch_size=args.train_batch, shuffle=True,
         num_workers=args.workers, pin_memory=True)

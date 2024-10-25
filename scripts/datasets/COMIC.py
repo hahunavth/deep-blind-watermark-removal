@@ -27,11 +27,11 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 class COMIC(data.Dataset):
-    def __init__(self, train, config=None, sample=[], gan_norm=False):
+    def __init__(self, train, config=None, sample=[], gan_norm=False, use_wm=True):
         self.train = []
         self.anno = []
         self.mask = []
-        self.wm = []
+        self.wm = [] if use_wm else None
         self.input_size = config.input_size
         self.normalized_input = config.normalized_input
         self.base_folder = config.base_dir
@@ -70,7 +70,8 @@ class COMIC(data.Dataset):
         for file_name in file_names:
             self.train.append(os.path.join(mypath, "image", file_name))
             self.mask.append(os.path.join(mypath, "mask", file_name))
-            self.wm.append(os.path.join(mypath,'watermark',file_name))
+            if use_wm:
+                self.wm.append(os.path.join(mypath,'watermark',file_name))
             self.anno.append(
                 os.path.join(
                     # self.base_folder, 
@@ -99,7 +100,9 @@ class COMIC(data.Dataset):
         img = Image.open(self.train[index]).convert("RGB")
         mask = Image.open(self.mask[index]).convert("L")
         anno = Image.open(self.anno[index]).convert("RGB")
-        wm = Image.open(self.wm[index]).convert('RGB')
+        wm = None
+        if self.wm is not None:
+            wm = Image.open(self.wm[index]).convert('RGB')
 
         # if mask has no masked region, return random sample
         if np.sum(np.array(mask)) == 0:
@@ -109,17 +112,38 @@ class COMIC(data.Dataset):
             "image": self.trans(img),
             "target": self.trans(anno),
             "mask": self.trans(mask),
-            "wm": self.trans(wm),
+            "wm": self.trans(wm) if wm is not None else None,
             "name": self.train[index].split("/")[-1],
             "imgurl": self.train[index],
             "maskurl": self.mask[index],
             "targeturl": self.anno[index],
-            "wmurl": self.wm[index],
+            "wmurl": self.wm[index] if wm is not None else None,
         }
 
     def __len__(self):
         return len(self.train)
         # return 10
+
+
+class COMBINED_COMMIC(data.Dataset):
+    def __init__(self, train, config=None, sample=[], gan_norm=False):
+        self.primary_ds = COMIC(f"{train}/primary", config, sample, gan_norm)
+        self.secondary_ds = COMIC(f"{train}/secondary", config, sample, gan_norm)
+
+        self.primary_len = len(self.primary_ds)
+        self.secondary_len = len(self.secondary_ds)
+
+        assert self.primary_len < self.secondary_len
+
+    def __getitem__(self, index):
+        if index < self.primary_len:
+            return self.primary_ds[index]
+        else:
+            index = random.randint(0, self.secondary_len - 1)
+            return self.secondary_ds[index]
+
+    def __len__(self):
+        return 2 * min(self.primary_len, self.secondary_len)
 
 
 if __name__ == "__main__":

@@ -5,8 +5,9 @@ data/
 ztmp/
 
 **/__pycache__/
-
-
+checkpoint_vx__vvv4n/
+.gradio/
+Untitled-1.txt
 
 # python main.py\
 #     --epochs 100\ 

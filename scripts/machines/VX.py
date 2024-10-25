@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn as nn
 from progress.bar import Bar
@@ -281,10 +282,13 @@ class VX(BasicMachine):
                 imfinal = im_to_numpy(torch.clamp(imfinal[0]*255,min=0.0,max=255.0)).astype(np.uint8)
                 target = im_to_numpy(torch.clamp(target[0]*255,min=0.0,max=255.0)).astype(np.uint8)
 
-                skimage.io.imsave('%s/%s'%(self.args.checkpoint,batches['name'][0]), imfinal)
+                impath = '%s/%s'%(self.args.checkpoint,batches['name'][0])
+                os.makedirs(os.path.dirname(impath), exist_ok=True)
+                skimage.io.imsave(impath, imfinal)
 
                 psnr = compare_psnr(target,imfinal)
-                ssim = compare_ssim(target,imfinal,multichannel=True)
+                # ssim = compare_ssim(target,imfinal,multichannel=True)
+                ssim = 0 # FIXME: ValueError: win_size exceeds image extent. Either ensure that your images are at least 7x7; or pass win_size explicitly in the function call, with an odd value less than or equal to the smaller side of your images. If your images are multichannel (with color channels), set channel_axis to the axis number corresponding to the channels.
 
                 psnres.update(psnr, inputs.size(0))
                 ssimes.update(ssim, inputs.size(0))

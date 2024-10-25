@@ -13,6 +13,14 @@ from options import Options
 
 
 def main(args):
+    args.arch="vvv4n"
+    args.schedule = 10000
+    args.style_loss = 0.025
+    args.ssim_loss = 0.15
+    args.loss_type = "hybrid"
+    args.machine = "vx"
+    args.base_dir = "data/manhua_ds"
+    
     val_loader = torch.utils.data.DataLoader(
         datasets.COMIC("val", args),
         batch_size=args.test_batch,
