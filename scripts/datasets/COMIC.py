@@ -108,9 +108,9 @@ class COMIC(data.Dataset):
         if self.wm is not None:
             wm = Image.open(self.wm[index]).convert('RGB')
 
-        # if mask has no masked region, return random sample
-        if np.sum(np.array(mask)) == 0:
-            return self.__getitem__(random.randint(0, len(self) - 1))
+        # # if mask has no masked region, return random sample
+        # if np.sum(np.array(mask)) == 0:
+        #     return self.__getitem__(random.randint(0, len(self) - 1))
 
         return {
             "image": self.trans(img),

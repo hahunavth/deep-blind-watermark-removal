@@ -44,7 +44,7 @@ def main(args):
         if args.freq < 0:
             Machine.validate(epoch)
             Machine.flush()
-            Machine.save_checkpoint()
+            Machine.save_checkpoint(snapshot=True)
 
 if __name__ == '__main__':
     parser=Options().init(argparse.ArgumentParser(description='WaterMark Removal'))
