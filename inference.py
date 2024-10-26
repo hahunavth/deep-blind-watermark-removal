@@ -161,11 +161,14 @@ def process_images(img, progress=gr.Progress()):
     img_reconstructed = reconstruct_image(reconstructed_segments, positions, width, height)
     mask2 = reconstruct_image(masks, positions, width, height, mode="L")
 
+    _mask2 = np.array(mask2)
+    _img = np.array(img)
+    _img_reconstructed = np.array(img_reconstructed)
+    _mask3 = get_filtered_mask(_mask2)
+    _img3 = fill_img_with_mask(_img, _img_reconstructed, _mask3)
 
-    mask3 = get_filtered_mask(mask2)
-
-    img3 = fill_img_with_mask(img, img_reconstructed, mask3)
-
+    img3 = Image.fromarray(_img3)
+    mask3 = Image.fromarray(_mask3)
 
     return img3, mask3, img_refine, img_reconstructed, mask2
 

@@ -297,3 +297,28 @@ class VX(BasicMachine):
 
         print("%s:PSNR:%.5f(%.5f),SSIM:%.5f(%.5f)"%(self.args.checkpoint,psnres.avg,psnresx.avg,ssimes.avg,ssimesx.avg))
         print("DONE.\n")
+
+    def save_checkpoint(self,filename='checkpoint.pth.tar', snapshot=None):
+        is_best = True if self.best_acc < self.metric else False
+
+        if is_best:
+            self.best_acc = self.metric
+
+        state = {
+                    'epoch': self.current_epoch + 1,
+                    'arch': self.args.arch,
+                    'state_dict': self.model.state_dict(),
+                    'best_acc': self.best_acc,
+                    'optimizer' : self.optimizer.state_dict() if self.optimizer else None,
+                }
+
+        filepath = os.path.join(self.args.checkpoint, filename)
+        torch.save(state, filepath)
+
+        if snapshot and state['epoch'] % snapshot == 0:
+            shutil.copyfile(filepath, os.path.join(self.args.checkpoint, 'checkpoint_{}.pth.tar'.format(state['epoch'])))
+        
+        if is_best:
+            self.best_acc = self.metric
+            print('Saving Best Metric with PSNR:%s'%self.best_acc)
+            shutil.copyfile(filepath, os.path.join(self.args.checkpoint, 'model_best.pth.tar'))
