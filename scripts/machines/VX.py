@@ -299,6 +299,7 @@ class VX(BasicMachine):
         print("DONE.\n")
 
     def save_checkpoint(self,filename='checkpoint.pth.tar', snapshot=None):
+        import shutil
         is_best = True if self.best_acc < self.metric else False
 
         if is_best:
