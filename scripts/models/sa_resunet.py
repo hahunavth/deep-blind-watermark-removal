@@ -478,7 +478,8 @@ class UnetVMS2AMv4(nn.Module):
             self.s2am = VMSingleS2AM(4,down=ResDownNew,up=ResUpNew)
 
     def set_optimizers(self):
-        lr = 0.00005 # NOTE: HARDCODE 0.0001 when finetuning
+        lr = 0.001  # Training
+        # lr = 0.00005 # NOTE: HARDCODE 0.0001 when finetuning
         self.optimizer_encoder = torch.optim.Adam(self.encoder.parameters(), lr=lr)
         self.optimizer_image = torch.optim.Adam(self.image_decoder.parameters(), lr=lr)
         self.optimizer_mask = torch.optim.Adam(self.mask_decoder.parameters(), lr=lr)
